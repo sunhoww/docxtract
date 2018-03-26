@@ -1,0 +1,38 @@
+{
+  "name": "docxtract",
+  "version": "0.0.0",
+  "description": "Google Cloud Function to extract text and font from a docx file",
+  "entry": "src/index.js",
+  "main": "index.js",
+  "author": "Sun Howwrongbum <sun@libermatic.com>",
+  "license": "MIT",
+  "scripts": {
+    "watch": "rollup -c --watch",
+    "test": "ava",
+    "watch:test": "ava --watch"
+  },
+  "dependencies": {
+    "busboy": "^0.2.14",
+    "ramda": "^0.25.0",
+    "xml2js": "^0.4.19",
+    "yauzl": "^2.9.1"
+  },
+  "devDependencies": {
+    "@ava/babel-preset-stage-4": "^1.1.0",
+    "ava": "^0.25.0",
+    "babel-core": "^6.26.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
+    "rollup": "^0.57.1",
+    "rollup-plugin-babel": "^3.0.3",
+    "sinon": "^4.4.8"
+  },
+  "ava": {
+    "files": ["test/*.js"],
+    "source": ["src/**/*.js"],
+    "failFast": true,
+    "failWithoutAssertions": false,
+    "require": "babel-register"
+  }
+}
