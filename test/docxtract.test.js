@@ -3,14 +3,10 @@ import sinon from 'sinon';
 
 import { docxtract } from '../src/index';
 
-test(`docxtract: should print docxtract`, t => {
-  const req = {
-    body: {},
-  };
-  const res = { send: sinon.stub() };
-
+test('docxtract: should error when request method is not POST', t => {
+  const req = { method: 'GET', body: {} };
+  const res = { status: sinon.stub(), end: sinon.stub() };
   docxtract(req, res);
-
-  t.true(res.send.calledOnce);
-  t.deepEqual(res.send.firstCall.args, ['docxtract']);
+  t.deepEqual(res.status.firstCall.args, [405]);
+  t.true(res.end.calledOnce);
 });
