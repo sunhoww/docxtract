@@ -13,9 +13,9 @@
   },
   "dependencies": {
     "busboy": "^0.2.14",
+    "jszip": "^3.1.5",
     "ramda": "^0.25.0",
-    "xml2js": "^0.4.19",
-    "yauzl": "^2.9.1"
+    "xml2js": "^0.4.19"
   },
   "devDependencies": {
     "@ava/babel-preset-stage-4": "^1.1.0",
