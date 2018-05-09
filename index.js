@@ -73,7 +73,7 @@ const readXml = (() => {
   };
 })();
 
-const getGlyph = R.compose(R.compose(R.flip(R.propOr)('w:cs'), R.flip(R.propOr)('w:ascii'))(R.prop('w:hAnsi')), R.path(['w:rPr', 'w:rFonts', '$']));
+const getGlyph = R.compose(R.compose(R.flip(R.propOr)('w:ascii'), R.flip(R.propOr)('w:hAnsi'))(R.prop('w:cs')), R.path(['w:rPr', 'w:rFonts', '$']));
 
 const getText = R.ifElse(R.propIs(String, 'w:t'), R.prop('w:t'), R.path(['w:t', '_']));
 
