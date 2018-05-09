@@ -1,6 +1,6 @@
 {
   "name": "docxtract",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Google Cloud Function to extract text and font from a docx file",
   "entry": "src/index.js",
   "main": "index.js",
