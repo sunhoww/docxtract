@@ -35,10 +35,14 @@ export default async function extract(
   file: Buffer
 ): Promise<Array<{ glyph: string, text: string }>> {
   const doc = await readXml(file);
-  const paras = R.path(['w:document', 'w:body', 'w:p'])(doc);
+  const paras = R.compose(
+    R.ifElse(R.is(Array), R.identity, x => [x]),
+    R.path(['w:document', 'w:body', 'w:p'])
+  )(doc);
   return R.map(
     R.compose(
       R.map(run => ({ glyph: getGlyph(run), text: getText(run) })),
+      R.ifElse(R.is(Array), R.identity, x => [x]),
       R.propOr([], 'w:r')
     ),
     paras
