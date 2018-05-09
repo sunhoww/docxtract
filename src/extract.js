@@ -31,6 +31,23 @@ const getText = R.ifElse(
   R.path(['w:t', '_'])
 );
 
+const concatText = R.compose(R.join(''), R.map(R.propOr('', 'text')));
+
+const joinSameGlyphRuns = (a, x) => {
+  const last = R.last(a);
+  if (last) {
+    if (last.glyph === x.glyph) {
+      return [
+        ...R.dropLast(1, a),
+        Object.assign({}, last, {
+          text: concatText([last, x]),
+        }),
+      ];
+    }
+  }
+  return [...a, x];
+};
+
 export default async function extract(
   file: Buffer
 ): Promise<Array<{ glyph: string, text: string }>> {
@@ -41,6 +58,7 @@ export default async function extract(
   )(doc);
   return R.map(
     R.compose(
+      R.reduce(joinSameGlyphRuns, []),
       R.map(run => ({ glyph: getGlyph(run), text: getText(run) })),
       R.ifElse(R.is(Array), R.identity, x => [x]),
       R.propOr([], 'w:r')

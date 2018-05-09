@@ -77,12 +77,30 @@ const getGlyph = R.compose(R.compose(R.flip(R.propOr)('w:cs'), R.flip(R.propOr)(
 
 const getText = R.ifElse(R.propIs(String, 'w:t'), R.prop('w:t'), R.path(['w:t', '_']));
 
+const concatText = R.compose(R.join(''), R.map(R.propOr('', 'text')));
+
+const joinSameGlyphRuns = (a, x) => {
+  const last = R.last(a);
+  if (last) {
+    if (last.glyph === x.glyph) {
+      return [...R.dropLast(1, a), Object.assign({}, last, {
+        text: concatText([last, x])
+      })];
+    }
+  }
+  return [...a, x];
+};
+
 var extract = (() => {
   var _ref2 = asyncToGenerator(function* (file) {
     const doc = yield readXml(file);
-    const paras = R.path(['w:document', 'w:body', 'w:p'])(doc);
-    return R.map(R.compose(R.map(function (run) {
+    const paras = R.compose(R.ifElse(R.is(Array), R.identity, function (x) {
+      return [x];
+    }), R.path(['w:document', 'w:body', 'w:p']))(doc);
+    return R.map(R.compose(R.reduce(joinSameGlyphRuns, []), R.map(function (run) {
       return { glyph: getGlyph(run), text: getText(run) };
+    }), R.ifElse(R.is(Array), R.identity, function (x) {
+      return [x];
     }), R.propOr([], 'w:r')), paras);
   });
 
